@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "525586223853",
+    "project_id": "foodecom-62a12",
+    "storage_bucket": "foodecom-62a12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525586223853:android:33bb60d5c356ff7a2bb2e4",
+        "android_client_info": {
+          "package_name": "site.tunckankilic.tkfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525586223853-mn67dcklloso3oau9s44ki7d5eaja75p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO-UuaPeQ3UXiV9tHtShIAYE7AdtR4T2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525586223853-mn67dcklloso3oau9s44ki7d5eaja75p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
