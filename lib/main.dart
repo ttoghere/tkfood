@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:tkfood/blocs/geolocation/geolocation_bloc.dart';
+import 'package:tkfood/blocs/blocs.dart';
 import 'package:tkfood/config/configs.dart';
-import 'package:tkfood/repositories/geolocation/geolocation_repository.dart';
+import 'package:tkfood/repositories/repositories.dart';
 import 'package:tkfood/screens/screens.dart';
-import 'blocs/blocs.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -26,6 +25,8 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider<GeolocationRepository>(
             create: (context) => GeolocationRepository()),
+        RepositoryProvider<PlacesRepository>(
+            create: (context) => PlacesRepository())
       ],
       child: MultiBlocProvider(
         providers: [
@@ -33,9 +34,16 @@ class MyApp extends StatelessWidget {
               create: (context) => GeolocationBloc(
                   geolocationRepository: context.read<GeolocationRepository>())
                 ..add(LoadGeolocation())),
+          BlocProvider(
+              create: (context) => AutocompleteBloc(
+                  placesRepository: context.read<PlacesRepository>())
+                ..add(const LoadAutocomplete())),
+          BlocProvider(
+              create: (context) => PlaceBloc(
+                  placesRepository: context.read<PlacesRepository>())),
         ],
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'TKFood',
           debugShowCheckedModeBanner: false,
           theme: theme(),
           initialRoute: LocationScreen.routeName,
