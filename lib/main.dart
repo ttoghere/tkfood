@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tkfood/blocs/geolocation/geolocation_bloc.dart';
+import 'package:tkfood/config/configs.dart';
+import 'package:tkfood/repositories/geolocation/geolocation_repository.dart';
+import 'package:tkfood/screens/screens.dart';
+import 'blocs/blocs.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -8,6 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Bloc.observer = SimpleBlocObserver();
   runApp(const MyApp());
 }
 
@@ -16,58 +22,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<GeolocationRepository>(
+            create: (context) => GeolocationRepository()),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (context) => GeolocationBloc(
+                  geolocationRepository: context.read<GeolocationRepository>())
+                ..add(LoadGeolocation())),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: theme(),
+          initialRoute: LocationScreen.routeName,
+          onGenerateRoute: AppRouter.onGenerateRoute,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
