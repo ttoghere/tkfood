@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
           title: 'TKFood',
           debugShowCheckedModeBanner: false,
           theme: theme(),
-          initialRoute: LocationScreen.routeName,
+          initialRoute: HomeScreen.routeName,
           onGenerateRoute: AppRouter.onGenerateRoute,
         ),
       ),
