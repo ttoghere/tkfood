@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tkfood/screens/home/home_screen.dart';
-import 'package:tkfood/screens/location/location_screen.dart';
+import 'package:tkfood/models/restaurant_model.dart';
 import 'package:tkfood/screens/screens.dart';
 
 class AppRouter {
@@ -19,9 +18,11 @@ class AppRouter {
       case FilterScreen.routeName:
         return FilterScreen.route();
       case RestaurantDetailsScreen.routeName:
-        return RestaurantDetailsScreen.route();
+        var restaurant = settings.arguments as Restaurant;
+        return RestaurantDetailsScreen.route(restaurant: restaurant);
       case RestaurantListingScreen.routeName:
-        return RestaurantListingScreen.route();
+        var restaurants = settings.arguments as List<Restaurant>;
+        return RestaurantListingScreen.route(restaurants: restaurants);
       case SplashScreen.routeName:
         return SplashScreen.route();
       case VoucherScreen.routeName:
