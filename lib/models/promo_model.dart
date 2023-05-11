@@ -6,7 +6,7 @@ class Promo extends Equatable {
   final String description;
   final String imageUrl;
 
-  Promo({
+  const Promo({
     required this.id,
     required this.title,
     required this.description,
@@ -22,7 +22,7 @@ class Promo extends Equatable {
       ];
 
   static List<Promo> promos = [
-    Promo(
+    const Promo(
       id: 1,
       title: 'FREE Delivery on Your First 3 Orders.',
       description:
@@ -30,7 +30,7 @@ class Promo extends Equatable {
       imageUrl:
           'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
     ),
-    Promo(
+    const Promo(
       id: 2,
       title: '20% off on Selected Restaurants.',
       description: 'Get a discount at more than 200+ restaurants',

@@ -16,7 +16,6 @@ class PlaceBloc extends Bloc<PlaceEvent, PlaceState> {
       : _placesRepository = placesRepository,
         super(PlaceLoading());
 
-  @override
   Stream<PlaceState> mapEventToState(
     PlaceEvent event,
   ) async* {

@@ -16,7 +16,6 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
       : _geolocationRepository = geolocationRepository,
         super(GeolocationLoading());
 
-  @override
   Stream<GeolocationState> mapEventToState(
     GeolocationEvent event,
   ) async* {

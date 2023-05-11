@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tkfood/models/restaurant_model.dart';
+import 'package:tkfood/screens/edit_basket/edit_basket_screen.dart';
 import 'package:tkfood/screens/screens.dart';
 
 class AppRouter {
@@ -11,6 +12,8 @@ class AppRouter {
         return LocationScreen.route();
       case BasketScreen.routeName:
         return BasketScreen.route();
+      case EditBasketScreen.routeName:
+        return EditBasketScreen.route();
       case ChekoutScreen.routeName:
         return ChekoutScreen.route();
       case DeliveryTimeScreen.routeName:

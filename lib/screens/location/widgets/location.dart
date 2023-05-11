@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tkfood/blocs/autocomplete/autocomplete_bloc.dart';
 import 'package:tkfood/blocs/blocs.dart';
 import 'package:tkfood/screens/location/widgets/location_search_box.dart';
 

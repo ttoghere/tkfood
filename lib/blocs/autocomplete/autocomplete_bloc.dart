@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -17,7 +16,6 @@ class AutocompleteBloc extends Bloc<AutocompleteEvent, AutocompleteState> {
       : _placesRepository = placesRepository,
         super(AutocompleteLoading());
 
-  @override
   Stream<AutocompleteState> mapEventToState(
     AutocompleteEvent event,
   ) async* {

@@ -1,14 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:tkfood/blocs/basket/basket_bloc.dart';
+import 'package:tkfood/blocs/blocs.dart';
 
 import 'package:tkfood/models/restaurant_model.dart';
+import 'package:tkfood/screens/basket/basket_screen.dart';
 import 'package:tkfood/screens/home/widgets/restaurant_tags.dart';
 
 class RestaurantDetailsScreen extends StatelessWidget {
   static const routeName = "/restaurant-details";
   static Route route({required Restaurant restaurant}) {
     return MaterialPageRoute(
-      builder: (context) =>  RestaurantDetailsScreen(restaurant: restaurant,),
+      builder: (context) => RestaurantDetailsScreen(
+        restaurant: restaurant,
+      ),
     );
   }
 
@@ -33,11 +38,13 @@ class RestaurantDetailsScreen extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.secondary,
-                  shape: RoundedRectangleBorder(),
+                  shape: const RoundedRectangleBorder(),
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                 ),
-                onPressed: () {},
-                child: Text("Basket"),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(BasketScreen.routeName);
+                },
+                child: const Text("Basket"),
               ),
             ],
           ),
@@ -119,7 +126,9 @@ class RestaurantDetailsScreen extends StatelessWidget {
                             children: [
                               Text("\$${e.price}"),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.read<BasketBloc>().add(AddItem(e));
+                                },
                                 icon: Icon(
                                   Icons.add_circle,
                                   color:

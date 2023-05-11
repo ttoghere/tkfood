@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tkfood/blocs/basket/basket_bloc.dart';
 import 'package:tkfood/blocs/blocs.dart';
+import 'package:tkfood/blocs/filter/filter_bloc.dart';
 import 'package:tkfood/config/configs.dart';
 import 'package:tkfood/repositories/repositories.dart';
 import 'package:tkfood/screens/screens.dart';
@@ -41,6 +43,15 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) => PlaceBloc(
                   placesRepository: context.read<PlacesRepository>())),
+          BlocProvider(
+            create: (context) => FilterBloc()
+              ..add(
+                LoadFilter(),
+              ),
+          ),
+          BlocProvider(
+            create: (context) => BasketBloc()..add(StartBasket()),
+          ),
         ],
         child: MaterialApp(
           title: 'TKFood',

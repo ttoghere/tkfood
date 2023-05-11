@@ -8,7 +8,7 @@ class Restaurant extends Equatable {
   final List<MenuItem> menuItems;
   final int deliveryTime;
   final double deliveryFee;
-  final double distance; // TODO: Calculate distance between user and restaurant
+  final double distance;
 
   const Restaurant({
     required this.name,
