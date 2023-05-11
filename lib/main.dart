@@ -5,6 +5,7 @@ import 'package:tkfood/blocs/blocs.dart';
 import 'package:tkfood/blocs/filter/filter_bloc.dart';
 import 'package:tkfood/config/configs.dart';
 import 'package:tkfood/repositories/repositories.dart';
+import 'package:tkfood/repositories/voucher/voucher_repository.dart';
 import 'package:tkfood/screens/screens.dart';
 import 'firebase_options.dart';
 
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<GeolocationRepository>(
             create: (context) => GeolocationRepository()),
         RepositoryProvider<PlacesRepository>(
-            create: (context) => PlacesRepository())
+            create: (context) => PlacesRepository()),
+        RepositoryProvider(create: (context) => VoucherRepository())
       ],
       child: MultiBlocProvider(
         providers: [
@@ -50,7 +52,14 @@ class MyApp extends StatelessWidget {
               ),
           ),
           BlocProvider(
-            create: (context) => BasketBloc()..add(StartBasket()),
+            create: (context) => VoucherBloc(
+                voucherRepository: context.read<VoucherRepository>())
+              ..add(LoadVouchers()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                BasketBloc(voucherBloc: context.read<VoucherBloc>())
+                  ..add(StartBasket()),
           ),
         ],
         child: MaterialApp(

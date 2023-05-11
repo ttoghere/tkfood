@@ -1,8 +1,8 @@
+import 'dart:developer';
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tkfood/blocs/basket/basket_bloc.dart';
-import 'package:tkfood/models/models.dart';
-
+import 'package:tkfood/blocs/blocs.dart';
+import 'package:tkfood/repositories/voucher/voucher_repository.dart';
 
 class VoucherScreen extends StatelessWidget {
   static const String routeName = '/vouchers';
@@ -63,8 +63,13 @@ class VoucherScreen extends StatelessWidget {
                   Expanded(
                     child: TextFormField(
                       decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(10),
-                          hintText: 'Voucher Code'),
+                        contentPadding: EdgeInsets.all(10),
+                        hintText: 'Voucher Code',
+                      ),
+                      onChanged: (value) async {
+                        print(await VoucherRepository()
+                            .searchVoucher(code: value));
+                      },
                     ),
                   ),
                 ],
@@ -76,58 +81,73 @@ class VoucherScreen extends StatelessWidget {
                     color: Theme.of(context).colorScheme.secondary,
                   ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: Voucher.vouchers.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.only(top: 5),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '3x',
-                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                            color: Theme.of(context).colorScheme.secondary),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Expanded(
-                        child: Text(
-                          Voucher.vouchers[index].code,
-                          textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.titleLarge,
+            BlocBuilder<VoucherBloc, VoucherState>(
+              builder: (context, state) {
+                if (state is VoucherLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is VoucherLoaded) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: state.vouchers.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(top: 5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 10,
                         ),
-                      ),
-                      BlocBuilder<BasketBloc, BasketState>(
-                        builder: (context, state) {
-                          return TextButton(
-                            style: TextButton.styleFrom(
-                              visualDensity: VisualDensity.compact,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '3x',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary),
                             ),
-                            onPressed: () {
-                              context.read<BasketBloc>().add(
-                                    AddVoucher(Voucher.vouchers[index]),
-                                  );
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Apply'),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                );
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Text(
+                                state.vouchers[index].code,
+                                textAlign: TextAlign.left,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                visualDensity: VisualDensity.compact,
+                              ),
+                              onPressed: () {
+                                context.read<VoucherBloc>().add(
+                                      SelectVoucher(
+                                          voucher: state.vouchers[index]),
+                                    );
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Apply'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Text('Something went wrong');
+                }
               },
             ),
           ],

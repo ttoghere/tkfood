@@ -105,7 +105,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
         Column(
           children: restaurant.menuItems
               .where((element) => element.category == restaurant.tags[index])
-              .map((e) => Column(
+              .map((menuItem) => Column(
                     children: [
                       Container(
                         color: Colors.white,
@@ -113,21 +113,21 @@ class RestaurantDetailsScreen extends StatelessWidget {
                         child: ListTile(
                           dense: true,
                           title: Text(
-                            e.name,
+                            menuItem.name,
                             style: Theme.of(context).textTheme.displaySmall,
                           ),
                           subtitle: Text(
-                            e.description,
+                            menuItem.description,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           trailing: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("\$${e.price}"),
+                              Text("\$${menuItem.price}"),
                               IconButton(
                                 onPressed: () {
-                                  context.read<BasketBloc>().add(AddItem(e));
+                                  context.read<BasketBloc>().add(AddItem(menuItem));
                                 },
                                 icon: Icon(
                                   Icons.add_circle,
