@@ -12,6 +12,13 @@ import 'package:tkfood/repositories/voucher/voucher_repository.dart';
 import 'package:tkfood/screens/screens.dart';
 import 'firebase_options.dart';
 
+
+/*
+//Next on:
+1)Filter Problem
+2)Location Actions
+*/
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
