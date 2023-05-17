@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:tkfood/models/models.dart';
 
 class CategoryFilter extends Equatable {
-  final int id;
+  final String id;
   final CategoryModel category;
   final bool value;
   const CategoryFilter({
@@ -16,7 +16,7 @@ class CategoryFilter extends Equatable {
   List<Object> get props => [id, category, value];
 
   CategoryFilter copyWith({
-    int? id,
+    String? id,
     CategoryModel? category,
     bool? value,
   }) {

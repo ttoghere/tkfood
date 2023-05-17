@@ -4,3 +4,4 @@ export 'autocomplete/autocomplete_bloc.dart';
 export 'geolocation/geolocation_bloc.dart';
 export 'places/places_bloc.dart';
 export 'voucher/voucher_bloc.dart';
+export 'restaurant/restaurant_bloc.dart';

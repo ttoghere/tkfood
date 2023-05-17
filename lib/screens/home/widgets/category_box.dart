@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tkfood/blocs/blocs.dart';
 import 'package:tkfood/models/models.dart';
 import 'package:tkfood/screens/restaurant_listing/restaurant_listing_screen.dart';
 
@@ -11,13 +12,22 @@ class CategoryBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Restaurant> restaurants =
+        context.select((RestaurantBloc restaurantBloc) {
+      if (restaurantBloc.state is RestaurantLoaded) {
+        return (restaurantBloc.state as RestaurantLoaded).restaurants;
+      } else {
+        return <Restaurant>[];
+      }
+    });
+
+    final List<Restaurant> filteredRestaurants = restaurants
+        .where((element) => element.categoryModel.contains(categoryModel))
+        .toList();
     return InkWell(
       onTap: () {
-        final List<Restaurant> restaurants = Restaurant.restaurants
-            .where((element) => element.tags.contains(categoryModel.name))
-            .toList();
         Navigator.of(context).pushNamed(RestaurantListingScreen.routeName,
-            arguments: restaurants);
+            arguments: filteredRestaurants);
       },
       child: Container(
         width: 80,
@@ -32,13 +42,12 @@ class CategoryBox extends StatelessWidget {
               top: 10,
               left: 10,
               child: Container(
-                height: 50,
-                width: 60,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white),
-                child: categoryModel.image,
-              ),
+                  height: 50,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white),
+                  child: Image.asset(categoryModel.imageUrl)),
             ),
             Padding(
               padding: const EdgeInsets.all(8),

@@ -3,6 +3,8 @@ import 'package:tkfood/models/models.dart';
 import 'package:tkfood/screens/home/widgets/widgets.dart';
 import 'package:tkfood/shared/shared.dart';
 
+import '../../blocs/blocs.dart';
+
 class HomeScreen extends StatelessWidget {
   static const routeName = "/";
   static Route route() {
@@ -18,7 +20,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(56),
+        child: CustomAppBar(),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -60,18 +65,32 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: Restaurant.restaurants.length,
-                itemBuilder: (context, index) {
-                  return RestaurantCard(
-                    restaurant: Restaurant.restaurants[index],
+            BlocBuilder<RestaurantBloc, RestaurantState>(
+              builder: (context, state) {
+                if (state is RestaurantLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-              ),
+                } else if (state is RestaurantLoaded) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.restaurants.length,
+                      itemBuilder: (context, index) {
+                        return RestaurantCard(
+                          restaurant: state.restaurants[index],
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: Text("Something Went Wrong"),
+                  );
+                }
+              },
             ),
           ],
         ),

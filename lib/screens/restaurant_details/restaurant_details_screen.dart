@@ -103,7 +103,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
           ),
         ),
         Column(
-          children: restaurant.menuItems
+          children: restaurant.products
               .where((element) => element.category == restaurant.tags[index])
               .map((menuItem) => Column(
                     children: [
@@ -127,7 +127,9 @@ class RestaurantDetailsScreen extends StatelessWidget {
                               Text("\$${menuItem.price}"),
                               IconButton(
                                 onPressed: () {
-                                  context.read<BasketBloc>().add(AddItem(menuItem));
+                                  context
+                                      .read<BasketBloc>()
+                                      .add(AddProduct(menuItem));
                                 },
                                 icon: Icon(
                                   Icons.add_circle,

@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tkfood/blocs/basket/basket_bloc.dart';
 import 'package:tkfood/blocs/blocs.dart';
 import 'package:tkfood/blocs/filter/filter_bloc.dart';
+import 'package:tkfood/blocs/restaurant/restaurant_bloc.dart';
 import 'package:tkfood/config/configs.dart';
 import 'package:tkfood/repositories/repositories.dart';
+import 'package:tkfood/repositories/restaurant/restaurant_repository.dart';
 import 'package:tkfood/repositories/voucher/voucher_repository.dart';
 import 'package:tkfood/screens/screens.dart';
 import 'firebase_options.dart';
@@ -30,7 +33,8 @@ class MyApp extends StatelessWidget {
             create: (context) => GeolocationRepository()),
         RepositoryProvider<PlacesRepository>(
             create: (context) => PlacesRepository()),
-        RepositoryProvider(create: (context) => VoucherRepository())
+        RepositoryProvider(create: (context) => VoucherRepository()),
+        RepositoryProvider(create: (context) => RestaurantRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -46,10 +50,11 @@ class MyApp extends StatelessWidget {
               create: (context) => PlaceBloc(
                   placesRepository: context.read<PlacesRepository>())),
           BlocProvider(
-            create: (context) => FilterBloc()
-              ..add(
-                LoadFilter(),
-              ),
+            create: (context) =>
+                FilterBloc(restaurantBloc: context.read<RestaurantBloc>())
+                  ..add(
+                    LoadFilter(),
+                  ),
           ),
           BlocProvider(
             create: (context) => VoucherBloc(
@@ -61,12 +66,19 @@ class MyApp extends StatelessWidget {
                 BasketBloc(voucherBloc: context.read<VoucherBloc>())
                   ..add(StartBasket()),
           ),
+          BlocProvider(
+              create: (context) => RestaurantBloc(
+                  restaurantRepository: context.read<RestaurantRepository>())),
+          BlocProvider<FilterBloc>(
+              create: (context) =>
+                  FilterBloc(restaurantBloc: context.read<RestaurantBloc>())
+                    ..add(LoadFilter()))
         ],
         child: MaterialApp(
           title: 'TKFood',
           debugShowCheckedModeBanner: false,
           theme: theme(),
-          initialRoute: HomeScreen.routeName,
+          initialRoute: LocationScreen.routeName,
           onGenerateRoute: AppRouter.onGenerateRoute,
         ),
       ),
